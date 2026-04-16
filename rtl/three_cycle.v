@@ -3,7 +3,7 @@ module three_cycle (
 input      [7:0]  A,
 input       [7:0] B,
 input             clk,
-input             reset_n,
+input             rst_n,
 input             start,
 
 output            done_mult,
@@ -16,9 +16,9 @@ reg [7:0]  a_int, b_int;
 reg [15:0] mult1, mult2;
 reg  done3, done2, done1, done_mult_int;
 
-always @(posedge clk, negedge reset_n)
+always @(posedge clk, negedge rst_n)
   begin
-    if(reset_n==0)
+    if(rst_n==0)
 	   begin 
 	     done3 <= 0;
 		  done2 <= 0;

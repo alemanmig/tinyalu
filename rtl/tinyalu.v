@@ -38,16 +38,17 @@ output reg [15:0] result_o
 		.B(b_i), 
 		.clk(clk_i),
 		.op(op_i),
-		.reset_n(reset_n),
+		.rst_n(rst_n),
 		.start(start_i),
 		.done_aax(done_aax),
 		.result_aax(result_aax)
 	);
 	
 three_cycle uut2 (
-      .A(a_i),
+        .A(a_i),
 		.B(b_i),
-		.reset_n(reset_n),
+		.clk(clk_i),
+		.rst_n(rst_n),
 		.start(start_i),
 		.done_mult(done_mult),
 		.result_mult(result_mult)
