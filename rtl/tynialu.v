@@ -14,7 +14,7 @@ input [7:0] B,
 input       clk,
 input [2:0] op,        //Operation Code
 input       reset_n,  //Reset syncronus
-input       star, 
+input       start, 
 
 //Outputs (contol and Result)
 output            done,
@@ -24,6 +24,7 @@ output reg [15:0] result
 //Internal Declarations
  wire done_aax;
  wire done_mult;
+ wire start;
  wire [15:0] result_aax;
  wire [15:0] result_mult;
  reg start_single;
@@ -46,18 +47,19 @@ output reg [15:0] result
 	
 three_cycle uut2 (
       .A(A),
-		.B(B),
-		.reset_n(reset_n),
-		.start(start),
-		.done_mult(done_mult),
-		.result_mult(result_mult)
+	  .B(B),
+	  .clk(clk),
+	  .reset_n(reset_n),
+	  .start(start),
+	  .done_mult(done_mult),
+	  .result_mult(result_mult)
 	);
  
 always @(op[2], start)    //start demux
   begin 
     case (op[2])
-	   1'b0    : begin start_single <= start; start_mult = 1'b0;  end
-      1'b1    : begin start_single <= 1'b0; start_mult <= start; end
+	  1'b0    : begin start_single <= start; start_mult = 1'b0;  end
+      1'b1    : begin start_single <= 1'b0;  start_mult <= start; end
       //default :
     endcase
   end	

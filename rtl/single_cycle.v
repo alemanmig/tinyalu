@@ -10,7 +10,7 @@ module single_cycle (
 input  [7:0]  A,
 input  [7:0]  B,
 input         clk,
-input         op,
+input   [2:0] op,
 input         reset_n,
 input         start,
 
@@ -27,13 +27,13 @@ always @(posedge clk)
   begin
    //Synchronous Reset
    if(reset_n == 0)    //Reset Actions
-      result_aax <= "0000000000000000";
+      result_aax <= '0;
    else 
      if(start == 1)
         case (op) 	 
-          3'b000 : result_aax = {8'b00000000,A} + {8'b00000000,B};
-			 3'b001 : result_aax = {8'b00000000,A} & {8'b00000000,B};
-			 3'b010 : result_aax = {8'b00000000,A} ^ {8'b00000000,B};
+          3'b001 : result_aax = {8'b00000000,A} + {8'b00000000,B};
+			    3'b010 : result_aax = {8'b00000000,A} & {8'b00000000,B};
+			    3'b011 : result_aax = {8'b00000000,A} ^ {8'b00000000,B};
 			 //default: null;  // Check 
 		endcase
   end	
