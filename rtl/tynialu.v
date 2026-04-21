@@ -24,7 +24,6 @@ output reg [15:0] result
 //Internal Declarations
  wire done_aax;
  wire done_mult;
- wire start;
  wire [15:0] result_aax;
  wire [15:0] result_mult;
  reg start_single;

@@ -119,13 +119,13 @@ byte         unsigned        B;
       all_ops : coverpoint op_set {
          ignore_bins null_ops = {rst_op, no_op};}
 
-      a_leg: coverpoint A {
+      a_leg: coverpoint vif.A {
          bins zeros = {'h00};
          bins others= {['h01:'hFE]};
          bins ones  = {'hFF};
       }
 
-      b_leg: coverpoint B {
+      b_leg: coverpoint vif.B {
          bins zeros = {'h00};
          bins others= {['h01:'hFE]};
          bins ones  = {'hFF};
