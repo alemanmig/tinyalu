@@ -10,7 +10,7 @@ module single_cycle (
 input  [7:0]  A,
 input  [7:0]  B,
 input         clk,
-input         op,
+input  [2:0]  op,
 input         reset_n,
 input         start,
 
@@ -30,10 +30,10 @@ always @(posedge clk)
       result_aax <= "0000000000000000";
    else 
      if(start == 1)
-        case (op) 	 
+        case (op) 	  
           3'b000 : result_aax = {8'b00000000,A} + {8'b00000000,B};
-			 3'b001 : result_aax = {8'b00000000,A} & {8'b00000000,B};
-			 3'b010 : result_aax = {8'b00000000,A} ^ {8'b00000000,B};
+			    3'b001 : result_aax = {8'b00000000,A} & {8'b00000000,B};
+			    3'b010 : result_aax = {8'b00000000,A} ^ {8'b00000000,B};
 			 //default: null;  // Check 
 		endcase
   end	
@@ -42,11 +42,10 @@ always @(posedge clk, negedge reset_n)
   begin
     if (!reset_n)
       done_aax_int <= 0;
-	else if (clk)
-	   begin
-         if ((start == 1) & (op != 3'b000)) 
-            done_aax_int <= 1;
-	     else 
+	  else if (clk) begin
+      if ((start == 1) & (op != 3'b000)) 
+          done_aax_int <= 1;
+	    else 
 		    done_aax_int <= 0;
 	   end 
    end			

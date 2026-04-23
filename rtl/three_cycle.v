@@ -20,11 +20,11 @@ always @(posedge clk, negedge reset_n)
   begin
     if(reset_n==0)
 	   begin 
-	     done3 <= 0;
+	      done3 <= 0;
 		  done2 <= 0;
 		  done1 <= 0;
 		  a_int <= 8'b0;
-	     b_int <= 8'b00000000;
+	      b_int <= 8'b00000000;
 		  mult1 <= 16'b0000000000000000;
 		  mult1 <= 16'b0000000000000000;
 		end

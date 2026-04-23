@@ -4,17 +4,17 @@
 //Code in verilog 
 ////////////////////////////////////
 
-module tynialu (
+module tinyalu (
 
 //Data inputs
 input [7:0] A,
 input [7:0] B,
 
 //Control inputs
-input       clk,
+input       clk_i,
 input [2:0] op,        //Operation Code
-input       reset_n,  //Reset syncronus
-input       star, 
+input       reset_ni,  //Reset syncronus
+input       start, 
 
 //Outputs (contol and Result)
 output            done,
@@ -22,47 +22,51 @@ output reg [15:0] result
 );
 
 //Internal Declarations
- wire done_aax;
- wire done_mult;
- wire [15:0] result_aax;
- wire [15:0] result_mult;
- reg start_single;
- reg start_mult;
+ wire 			done_aax;
+ wire 			done_mult;
+ wire [15:0] 	result_aax;
+ wire [15:0] 	result_mult;
+ reg 			start_single;
+ reg 			start_mult;
  
  //Implicit buffer signal declarations
- reg done_internal;
+ reg 			done_internal;
  
  //component declarations 
  single_cycle uut1 (
 		.A(A), 
 		.B(B), 
-		.clk(clk),
+		.clk(clk_i),
 		.op(op),
-		.reset_n(reset_n),
-		.start(start),
+		.reset_n(reset_ni),
+		.start(start_single),
 		.done_aax(done_aax),
 		.result_aax(result_aax)
 	);
 	
 three_cycle uut2 (
-      .A(A),
+      	.A(A),
 		.B(B),
-		.reset_n(reset_n),
-		.start(start),
+		.clk(clk_i),
+		.reset_n(reset_ni),
+		.start(start_mult),
 		.done_mult(done_mult),
 		.result_mult(result_mult)
 	);
  
-always @(op[2], start)    //start demux
+always_comb  //start demux
   begin 
+	start_single = 1'b0;
+	start_mult = 1'b0;
+
     case (op[2])
-	   1'b0    : begin start_single <= start; start_mult = 1'b0;  end
-      1'b1    : begin start_single <= 1'b0; start_mult <= start; end
+	   	1'b0    : begin start_single <= start; start_mult <= 1'b0;  end
+      	1'b1    : begin start_single <= 1'b0; start_mult <= start; end
       //default :
     endcase
   end	
 
-always @(result_aax or result_mult or op)  // result mux
+always_comb // result mux
   begin
     case (op[2]) 
 	  1'b0    : result <= result_aax;
@@ -71,8 +75,7 @@ always @(result_aax or result_mult or op)  // result mux
 	 endcase 
   end
   
-always @(done_aax or done_mult or op)
-  begin
+always_comb begin
     case (op[2])
 	   1'b0  : done_internal <= done_aax;
 	   1'b1  : done_internal <= done_mult;
